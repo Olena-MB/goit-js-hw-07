@@ -29,19 +29,28 @@ function onImgClick(e) {
   //Відкриття модального вікна по кліку на елементі галереї. 
 
   const imgLink = e.target.dataset.source;
-  const modalImg = basicLightbox.create(`<img src="${imgLink}"> width = "800" height = "600"`);
-  modalImg.show();
+  const modalImg = basicLightbox.create(
+    `
+      <img src="${imgLink}" width = "800" height = "600">`,
+    {
+    onShow: () => {
+        window.addEventListener('keydown', onEscKeyPress);
+    },
+    onClose: () => {
+        window.removeEventListener('keydown', onEscKeyPress);
+    }
+  });
+modalImg.show();
 
-
+  
   //Додай закриття модального вікна після натискання клавіші Escape
-  window.addEventListener('keydown', onEscKeyPress);
+  //window.addEventListener('keydown', onEscKeyPress);
 
   function onEscKeyPress(e) {
 
     const ESC_KEY_CODE = 'Escape';
     if (e.code === ESC_KEY_CODE) {
       modalImg.close();
-      window.removeEventListener('keydown', onEscKeyPress)
     };
-  };
+  }; 
 };
